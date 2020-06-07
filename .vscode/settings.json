@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "sstream": "c",
+        "screen.h": "c",
+        "cstddef": "c",
+        "ssd1306.h": "c",
+        "digimon.h": "c"
+    }
+}
