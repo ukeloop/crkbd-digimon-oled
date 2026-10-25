@@ -22,13 +22,6 @@ void screen_clear(ScreenMatrix* screen) {
     }
 }
 
-void screen_update(ScreenMatrix* dest, const ScreenMatrix* source) {
-    if (memcmp(dest->screen, source->screen, sizeof(dest->screen)) != 0) {
-        memcpy(dest->screen, source->screen, sizeof(dest->screen));
-        dest->dirty = true;
-    }
-}
-
 void screen_draw_bit(ScreenMatrix* screen, uint8_t x, uint8_t y) {
     if (y >= DisplayWidth || x >= DisplayHeight) {
         return;
