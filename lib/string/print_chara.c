@@ -731,7 +731,7 @@ void print_chara(struct ScreenMatrix *matrix, char str, uint8_t x, uint8_t y) {
     }
 }
 
-void print_chara_p(struct ScreenMatrix *matrix, char *str, uint8_t row) {
+void print_chara_p(struct ScreenMatrix *matrix, const char *str, uint8_t row) {
     const uint8_t x            = DisplayHeight - (row + 1) * CHARA_HEIGHT;
     const uint8_t chara_length = strlen(str);
 
