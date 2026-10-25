@@ -7,7 +7,7 @@
 #define IS_MASTER 0
 #endif
 
-#define FPS 60
+#define FPS 30
 #define REFRESH_INTARVAL 1000 / FPS
 #define FRESH_AGE 2 * FPS
 #define BADY_AGE 10 * FPS
