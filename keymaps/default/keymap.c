@@ -141,6 +141,12 @@ void iota_gfx_task_user(void) {
 #endif  // SSD1306OLED
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#ifdef SSD1306OLED
+    if (!process_record_gfx(keycode, record)) {
+        return false;
+    }
+#endif
+
     if (record->event.pressed) {
 #ifdef SSD1306OLED
         set_keylog(keycode, record);
