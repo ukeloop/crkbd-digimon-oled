@@ -1,7 +1,7 @@
 #ifdef WPM_ENABLE
 
+#include QMK_KEYBOARD_H
 #include <stdio.h>
-#include "crkbd.h"
 
 static uint8_t current_wpm = 0;
 static uint8_t latest_wpm = 0;
