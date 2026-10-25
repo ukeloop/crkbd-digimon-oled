@@ -32,7 +32,7 @@ const char *get_layer_state(void) {
             snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Adjust");
             break;
         default:
-            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%u", (unsigned int)layer_state);
     }
 
     current_layer_state = layer_state;
