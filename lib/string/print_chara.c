@@ -1,6 +1,5 @@
 #include "../screen.h"
 #include <stdio.h>
-#include "crkbd.h"
 #include "keyloger.h"
 
 #define CHARA_WIDTH 6
