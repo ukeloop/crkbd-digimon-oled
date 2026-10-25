@@ -11,7 +11,6 @@
 extern rgblight_config_t rgblight_config;
 #endif
 
-extern uint8_t is_master;
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -27,7 +26,6 @@ enum custom_keycodes {
     LOWER,
     RAISE,
     // ADJUST,
-    BACKLIT,
     RGBRST,
 };
 
@@ -52,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,\
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_HOME,KC_PGDOWN,KC_PGUP, KC_END, XXXXXXX, XXXXXXX,\
+        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_HOME,KC_PGDN,KC_PGUP, KC_END, XXXXXXX, XXXXXXX,\
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             KC_LALT, KC_LGUI,  KC_SPC, LALT(KC_ENT),   RAISE,  LOWER \
                                         //`--------------------------'  `--------------------------'
@@ -125,22 +123,28 @@ void matrix_render_user(struct ScreenMatrix *matrix) {
     print_chara_p(matrix, get_keylog(), 1);
 
 #    ifdef WPM_ENABLE
-    if (is_master) {
+    if (is_keyboard_master()) {
         print_chara_p(matrix, get_wpm(), 2);
     }
 #    endif
 }
 
 void iota_gfx_task_user(void) {
-    struct ScreenMatrix matrix;
-    screen_clear(&matrix);
-    matrix_render_user(&matrix);
-    screen_update(&g_screen, &matrix);
+    // Render directly into the shared framebuffer. A temporary ScreenMatrix
+    // consumes another 512 bytes of stack on the ATmega32U4.
+    screen_clear(&g_screen);
+    matrix_render_user(&g_screen);
 }
 
 #endif  // SSD1306OLED
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#ifdef SSD1306OLED
+    if (!process_record_gfx(keycode, record)) {
+        return false;
+    }
+#endif
+
     if (record->event.pressed) {
 #ifdef SSD1306OLED
         set_keylog(keycode, record);
@@ -182,15 +186,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           #endif
             return false;
         */
-        case RGB_MOD:
 #ifdef RGBLIGHT_ENABLE
+        case RGB_MOD:
             if (record->event.pressed) {
                 rgblight_mode(RGB_current_mode);
                 rgblight_step();
                 RGB_current_mode = rgblight_config.mode;
             }
-#endif
             return false;
+#endif
         case RGBRST:
 #ifdef RGBLIGHT_ENABLE
             if (record->event.pressed) {

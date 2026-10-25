@@ -1,6 +1,15 @@
 
+# This keymap uses the custom SSD1306 driver; avoid linking QMK's second OLED framebuffer.
+OLED_ENABLE = no
+
 # If you want to change the display of OLED, you need to change here
-SRC +=  ./lib/screen.c \
+# Keep upstream Corne matrix/split code while enabling this keymap's legacy OLED stack.
+WPM_ENABLE = yes
+
+# Legacy SSD1306 renderer and AVR TWI transport.
+SRC +=  ../../ssd1306.c \
+        ../../i2c.c \
+        ./lib/screen.c \
         ./lib/digimon/print_digimon.c \
         ./lib/digimon/digimon.c \
         ./lib/string/print_chara.c \
