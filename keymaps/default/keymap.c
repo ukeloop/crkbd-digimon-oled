@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,\
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_HOME,KC_PGDOWN,KC_PGUP, KC_END, XXXXXXX, XXXXXXX,\
+        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_HOME,KC_PGDN,KC_PGUP, KC_END, XXXXXXX, XXXXXXX,\
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             KC_LALT, KC_LGUI,  KC_SPC, LALT(KC_ENT),   RAISE,  LOWER \
                                         //`--------------------------'  `--------------------------'
@@ -187,15 +187,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           #endif
             return false;
         */
-        case RGB_MOD:
 #ifdef RGBLIGHT_ENABLE
+        case RGB_MOD:
             if (record->event.pressed) {
                 rgblight_mode(RGB_current_mode);
                 rgblight_step();
                 RGB_current_mode = rgblight_config.mode;
             }
-#endif
             return false;
+#endif
         case RGBRST:
 #ifdef RGBLIGHT_ENABLE
             if (record->event.pressed) {
