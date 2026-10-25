@@ -24,7 +24,7 @@ size: 16x16
 "     #########  ",
 */
 static void print_megadramon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00001111, 0b11110100},
         {0b00111111, 0b10010110},
         {0b01111110, 0b11100110},
@@ -65,7 +65,7 @@ static void print_megadramon_neutral(struct ScreenMatrix *matrix, uint8_t x, uin
 "    ########### ",
 */
 static void print_megadramon_neutral2(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b00000000},
         {0b00001111, 0b11110100},
         {0b00111111, 0b10010110},
