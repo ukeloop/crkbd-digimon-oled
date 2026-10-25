@@ -24,7 +24,7 @@ size: 16x16
 " ###### ####### ",
 */
 static void print_weregarurumon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000110, 0b00001100},
         {0b00001011, 0b11010100},
         {0b00001100, 0b00100100},
@@ -65,7 +65,7 @@ static void print_weregarurumon_neutral(struct ScreenMatrix *matrix, uint8_t x, 
 " ###### ####### ",
 */
 static void print_weregarurumon_neutral2(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b00000000},
         {0b00000110, 0b00001100},
         {0b00001011, 0b11010100},
