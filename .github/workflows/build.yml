@@ -26,14 +26,13 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-avr binutils-avr avr-libc dfu-programmer dfu-util
+          sudo apt-get install -y gcc-avr binutils-avr avr-libc dfu-programmer dfu-util rsync
           python3 -m pip install --user -r qmk_firmware/requirements.txt qmk
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: Replace the upstream Corne keyboard files
+      - name: Overlay custom Corne files while preserving upstream files
         run: |
-          rm -rf qmk_firmware/keyboards/crkbd
-          cp -a crkbd-digimon-oled qmk_firmware/keyboards/crkbd
+          rsync -a --exclude='.git/' --exclude='.github/' crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
 
       - name: Build firmware
         working-directory: qmk_firmware
