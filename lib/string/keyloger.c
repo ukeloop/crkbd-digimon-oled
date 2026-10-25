@@ -1,5 +1,5 @@
+#include QMK_KEYBOARD_H
 #include <stdio.h>
-#include "crkbd.h"
 
 static char keylog_str[24] = {};
 
