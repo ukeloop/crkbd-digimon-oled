@@ -132,10 +132,10 @@ void matrix_render_user(struct ScreenMatrix *matrix) {
 }
 
 void iota_gfx_task_user(void) {
-    struct ScreenMatrix matrix;
-    screen_clear(&matrix);
-    matrix_render_user(&matrix);
-    screen_update(&g_screen, &matrix);
+    // Render directly into the shared framebuffer. A temporary ScreenMatrix
+    // consumes another 512 bytes of stack on the ATmega32U4.
+    screen_clear(&g_screen);
+    matrix_render_user(&g_screen);
 }
 
 #endif  // SSD1306OLED
