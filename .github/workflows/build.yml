@@ -15,7 +15,7 @@ jobs:
         with:
           repository: qmk/qmk_firmware
           # Pin to the latest stable QMK release; update deliberately when a new release is published.
-          ref: 0.34.0
+          ref: 0.34.7
           submodules: recursive
           path: qmk_firmware
 
