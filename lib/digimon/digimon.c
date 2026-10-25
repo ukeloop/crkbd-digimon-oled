@@ -1,5 +1,5 @@
 #include <string.h>
-#include "crkbd.h"
+#include QMK_KEYBOARD_H
 #include "digimon.h"
 
 #if IS_MASTER
