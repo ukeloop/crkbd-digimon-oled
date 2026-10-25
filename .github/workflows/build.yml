@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: qmk/qmk_firmware
-          # Track the current QMK development branch so API/build regressions are detected.
-          ref: master
+          # Pin to the latest stable QMK release; update deliberately when a new release is published.
+          ref: 0.34.0
           submodules: recursive
           path: qmk_firmware
 
