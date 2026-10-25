@@ -1,4 +1,7 @@
 
+# This keymap uses the custom SSD1306 driver; avoid linking QMK's second OLED framebuffer.
+OLED_ENABLE = no
+
 # If you want to change the display of OLED, you need to change here
 # Keep upstream Corne matrix/split code while enabling this keymap's legacy OLED stack.
 WPM_ENABLE = yes
