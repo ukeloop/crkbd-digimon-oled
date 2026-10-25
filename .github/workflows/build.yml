@@ -34,12 +34,8 @@ jobs:
 
       - name: Overlay custom Corne files while preserving upstream files
         run: |
-          # Preserve upstream Corne keyboard metadata, split transport, and build configuration.
-          # Only overlay the custom OLED driver, I2C master transport, and this project's keymap/assets.
+          # Overlay only this project's custom OLED driver, I2C transport, keymap, and assets.
           rsync -a --exclude='.git/' --exclude='.github/' \
-            --exclude='/config.h' --exclude='/rules.mk' --exclude='/info.json' \
-            --exclude='/crkbd.c' --exclude='/crkbd.h' --exclude='/rev1/' \
-            --exclude='/serial.c' --exclude='/serial.h' \
             crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
 
       - name: Validate upstream keyboard.json metadata
