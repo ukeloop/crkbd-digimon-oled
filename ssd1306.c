@@ -136,8 +136,6 @@ bool iota_gfx_off(void) { return _send_cmd(DisplayOff); }
 
 bool iota_gfx_on(void) { return _send_cmd(DisplayOn); }
 
-void iota_gfx_clear_screen(void) {}
-
 // ビット反転
 uint8_t revbits8(uint8_t v) {
     v = ((v >> 1) & 0x55) | ((v & 0x55) << 1);
