@@ -59,16 +59,4 @@ uint8_t i2c_master_write(uint8_t data) {
     return TW_STATUS == TW_MT_DATA_ACK ? 0 : 1;
 }
 
-uint8_t i2c_master_read(int ack) {
-    TWCR = _BV(TWINT) | _BV(TWEN) | (ack ? _BV(TWEA) : 0);
-    if (!i2c_wait()) {
-        return 0;
-    }
-    return TWDR;
-}
-
-void i2c_reset_state(void) {
-    TWCR = 0;
-}
-
 #endif
