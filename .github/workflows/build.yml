@@ -2,7 +2,7 @@ name: Build firmware
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, fix/ci-preserve-upstream-crkbd]
   pull_request:
   workflow_dispatch:
 
@@ -33,6 +33,8 @@ jobs:
       - name: Overlay custom Corne files while preserving upstream files
         run: |
           rsync -a --exclude='.git/' --exclude='.github/' crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
+          # QMK 0.8.0 does not translate WPM_ENABLE=yes into a C preprocessor define.
+          echo 'OPT_DEFS += -DWPM_ENABLE' >> qmk_firmware/keyboards/crkbd/rules.mk
 
       - name: Build firmware
         working-directory: qmk_firmware
