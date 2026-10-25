@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "action.h"
 
-bool is_timeout;
+extern bool is_timeout;
 
 enum ssd1306_cmds {
   DisplayOff = 0xAE,
