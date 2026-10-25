@@ -11,7 +11,6 @@
 extern rgblight_config_t rgblight_config;
 #endif
 
-extern uint8_t is_master;
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -125,7 +124,7 @@ void matrix_render_user(struct ScreenMatrix *matrix) {
     print_chara_p(matrix, get_keylog(), 1);
 
 #    ifdef WPM_ENABLE
-    if (is_master) {
+    if (is_keyboard_master()) {
         print_chara_p(matrix, get_wpm(), 2);
     }
 #    endif
