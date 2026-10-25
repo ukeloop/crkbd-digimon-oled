@@ -38,3 +38,13 @@ jobs:
       - name: Build firmware
         working-directory: qmk_firmware
         run: make crkbd:default
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: crkbd-digimon-oled-firmware
+          path: |
+            qmk_firmware/**/*.hex
+            qmk_firmware/**/*.bin
+          if-no-files-found: error
+          retention-days: 14
