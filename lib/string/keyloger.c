@@ -1,10 +1,11 @@
 #include QMK_KEYBOARD_H
+#include <avr/pgmspace.h>
 #include <stdio.h>
 
 static char keylog_str[24] = {};
 
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
-    static const char code_to_name[60] = {
+    static const char code_to_name[60] PROGMEM = {
         ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
         'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
         'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -15,7 +16,7 @@ void set_keylog(uint16_t keycode, keyrecord_t *record) {
 
     snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
            record->event.key.row, record->event.key.col, keycode,
-           keycode < 60 ? code_to_name[keycode] : ' ');
+           keycode < sizeof(code_to_name) ? (char)pgm_read_byte(&code_to_name[keycode]) : ' ');
 }
 
 const char *get_keylog(void) {
