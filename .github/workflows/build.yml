@@ -41,6 +41,34 @@ jobs:
         working-directory: qmk_firmware
         run: make crkbd:default
 
+      - name: Report flash and RAM usage
+        working-directory: qmk_firmware
+        shell: bash
+        run: |
+          set -euo pipefail
+          memory_report="$(avr-size -C --mcu=atmega32u4 .build/crkbd_rev1_default.elf)"
+          printf '%s\n' "$memory_report"
+
+          ram_used="$(printf '%s\n' "$memory_report" | sed -nE 's/^[[:space:]]*Data:[[:space:]]*([0-9]+) bytes.*/\1/p')"
+          if [[ -z "$ram_used" ]]; then
+            echo "Could not parse RAM usage from avr-size output." >&2
+            exit 1
+          fi
+
+          # ATmega32U4 has 2,560 bytes of SRAM. Keep at least 512 bytes
+          # outside static data/BSS for stack and runtime headroom.
+          ram_total=2560
+          ram_limit=2048
+          ram_remaining=$((ram_total - ram_used))
+          echo "Static RAM used: ${ram_used}/${ram_total} bytes"
+          echo "SRAM remaining after static data: ${ram_remaining} bytes"
+          echo "Static RAM budget (80%): ${ram_limit} bytes"
+
+          if (( ram_used > ram_limit )); then
+            echo "Static RAM usage exceeds the 80% budget; review memory use." >&2
+            exit 1
+          fi
+
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
