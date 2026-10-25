@@ -24,7 +24,7 @@ size: 16x16
 " ########  #####",
 */
 void print_metalgarurumon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00001110, 0b00111000},
         {0b00010010, 0b01001000},
         {0b00101111, 0b10010000},
@@ -65,7 +65,7 @@ void print_metalgarurumon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_
 "          ##### ",
 */
 static void print_metalgarurumon_neutral2(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b00000000},
         {0b00011100, 0b00011100},
         {0b00101111, 0b11100100},

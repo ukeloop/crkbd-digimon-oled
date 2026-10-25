@@ -24,7 +24,7 @@ size: 16x16
 "#######  #######",
 */
 static void print_growlmon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000001, 0b10111000},
         {0b00001111, 0b11011000},
         {0b00011001, 0b00101000},
@@ -65,7 +65,7 @@ static void print_growlmon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8
 " ###############",
 */
 static void print_growlmon_neutral2(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b00000000},
         {0b00000001, 0b10111000},
         {0b00001111, 0b11011000},

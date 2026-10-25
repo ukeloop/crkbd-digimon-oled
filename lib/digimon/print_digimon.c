@@ -8,7 +8,7 @@ void print_digimon(ScreenMatrix* screen, const uint8_t dots[][2], uint8_t x, uin
 
     for (col = 0; col < dots_h; ++col, ++dots_y) {
         for (row = 0; row < dots_w; ++row) {
-            screen_draw_byte(screen, x + row * 8, dots_y, !mirror ? dots[col][row] : revbits8(dots[col][(dots_w - row - 1)]));
+            screen_draw_byte(screen, x + row * 8, dots_y, !mirror ? pgm_read_byte(&dots[col][row]) : revbits8(pgm_read_byte(&dots[col][(dots_w - row - 1)])));
         }
     }
 }

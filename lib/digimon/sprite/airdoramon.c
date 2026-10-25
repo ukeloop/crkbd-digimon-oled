@@ -24,7 +24,7 @@ size: 16x16
 "       #######  ",
 */
 static void print_airdoramon_neutral(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b11101100},
         {0b00000111, 0b00101010},
         {0b00001000, 0b01001010},
@@ -65,7 +65,7 @@ static void print_airdoramon_neutral(struct ScreenMatrix *matrix, uint8_t x, uin
 "      #######   ",
 */
 static void print_airdoramon_neutral2(struct ScreenMatrix *matrix, uint8_t x, uint8_t y, bool mirror) {
-    const uint8_t sprite[16][2] = {
+    static const uint8_t sprite[16][2] PROGMEM = {
         {0b00000000, 0b00000000},
         {0b00000000, 0b11101100},
         {0b00000111, 0b00101010},
