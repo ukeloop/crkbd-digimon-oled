@@ -54,21 +54,32 @@ jobs:
           memory_report="$(avr-size -C --mcu=atmega32u4 .build/crkbd_rev1_default.elf)"
           printf '%s\n' "$memory_report"
 
+          flash_used="$(printf '%s\n' "$memory_report" | sed -nE 's/^[[:space:]]*Program:[[:space:]]*([0-9]+) bytes.*/\1/p')"
           ram_used="$(printf '%s\n' "$memory_report" | sed -nE 's/^[[:space:]]*Data:[[:space:]]*([0-9]+) bytes.*/\1/p')"
-          if [[ -z "$ram_used" ]]; then
-            echo "Could not parse RAM usage from avr-size output." >&2
+          if [[ -z "$flash_used" || -z "$ram_used" ]]; then
+            echo "Could not parse flash/RAM usage from avr-size output." >&2
             exit 1
           fi
 
-          # ATmega32U4 has 2,560 bytes of SRAM. Keep at least 512 bytes
-          # outside static data/BSS for stack and runtime headroom.
+          # ATmega32U4 has 32,768 bytes of flash and 2,560 bytes of SRAM.
+          # Keep flash below 90% and static RAM below 80% for runtime headroom.
+          flash_total=32768
+          flash_limit=29491
           ram_total=2560
           ram_limit=2048
+          flash_remaining=$((flash_total - flash_used))
           ram_remaining=$((ram_total - ram_used))
+          echo "Flash used: ${flash_used}/${flash_total} bytes"
+          echo "Flash remaining: ${flash_remaining} bytes"
+          echo "Flash budget (90%): ${flash_limit} bytes"
           echo "Static RAM used: ${ram_used}/${ram_total} bytes"
           echo "SRAM remaining after static data: ${ram_remaining} bytes"
           echo "Static RAM budget (80%): ${ram_limit} bytes"
 
+          if (( flash_used > flash_limit )); then
+            echo "Flash usage exceeds the 90% budget; review program size." >&2
+            exit 1
+          fi
           if (( ram_used > ram_limit )); then
             echo "Static RAM usage exceeds the 80% budget; review memory use." >&2
             exit 1
