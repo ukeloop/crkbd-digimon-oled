@@ -38,7 +38,7 @@ jobs:
           # Only overlay the legacy OLED driver and this project's keymap/assets.
           rsync -a --exclude='.git/' --exclude='.github/' \
             --exclude='/config.h' --exclude='/rules.mk' --exclude='/info.json' \
-            --exclude='/crkbd.c' --exclude='/crkbd.h' \
+            --exclude='/crkbd.c' --exclude='/crkbd.h' --exclude='/rev1/' \
             crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
 
       - name: Build firmware
