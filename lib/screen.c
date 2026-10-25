@@ -7,8 +7,16 @@ struct ScreenMatrix g_screen;
 void screen_clear(ScreenMatrix* screen) {
     // Clear in place instead of allocating a second 512-byte framebuffer on
     // the AVR stack. Mark the display dirty only when pixels actually change.
-    static const uint8_t blank[sizeof(screen->screen)] = {0};
-    if (memcmp(screen->screen, blank, sizeof(screen->screen)) != 0) {
+    bool changed = false;
+    const uint8_t* pixels = (const uint8_t*)screen->screen;
+    for (size_t i = 0; i < sizeof(screen->screen); ++i) {
+        if (pixels[i] != 0) {
+            changed = true;
+            break;
+        }
+    }
+
+    if (changed) {
         memset(screen->screen, 0, sizeof(screen->screen));
         screen->dirty = true;
     }
