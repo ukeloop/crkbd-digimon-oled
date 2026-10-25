@@ -1,0 +1,39 @@
+name: Build firmware
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout QMK firmware
+        uses: actions/checkout@v4
+        with:
+          repository: qmk/qmk_firmware
+          ref: master
+          submodules: recursive
+          path: qmk_firmware
+
+      - name: Checkout this keyboard firmware
+        uses: actions/checkout@v4
+        with:
+          path: crkbd-digimon-oled
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-avr binutils-avr avr-libc dfu-programmer dfu-util
+          python3 -m pip install --user -r qmk_firmware/requirements.txt
+
+      - name: Replace the upstream Corne keyboard files
+        run: |
+          rm -rf qmk_firmware/keyboards/crkbd
+          cp -a crkbd-digimon-oled qmk_firmware/keyboards/crkbd
+
+      - name: Build firmware
+        working-directory: qmk_firmware
+        run: make crkbd:default
