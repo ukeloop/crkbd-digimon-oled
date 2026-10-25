@@ -34,8 +34,11 @@ jobs:
 
       - name: Overlay custom Corne files while preserving upstream files
         run: |
+          # Preserve upstream Corne keyboard metadata and build configuration.
+          # Only overlay the legacy OLED driver and this project's keymap/assets.
           rsync -a --exclude='.git/' --exclude='.github/' \
-            --exclude='crkbd.c' --exclude='crkbd.h' \
+            --exclude='/config.h' --exclude='/rules.mk' --exclude='/info.json' \
+            --exclude='/crkbd.c' --exclude='/crkbd.h' \
             crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
 
       - name: Build firmware
