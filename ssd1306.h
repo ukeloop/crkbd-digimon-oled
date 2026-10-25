@@ -2,7 +2,6 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "pincontrol.h"
 #include "action.h"
 
 bool is_timeout;
