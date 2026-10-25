@@ -36,9 +36,14 @@ static uint8_t displaying;
 #    endif
 
 static uint16_t last_keypress = 0;
-bool            is_timeout    = false;
+static uint16_t last_render = 0;
+bool            is_timeout  = false;
 
 static bool force_dirty = true;
+
+#ifndef ScreenRefreshInterval
+#    define ScreenRefreshInterval 33 /* approximately 30 FPS */
+#endif
 
 // Write command sequence.
 // Returns true on success.
@@ -189,7 +194,12 @@ void iota_gfx_flush(void) { screen_render(&g_screen); }
 __attribute__((weak)) void iota_gfx_task_user(void) {}
 
 void iota_gfx_task(void) {
-    iota_gfx_task_user();
+    // Compose frames at a bounded rate instead of doing OLED work on every
+    // matrix scan. Keypresses still request an immediate redraw.
+    if (force_dirty || timer_elapsed(last_render) >= ScreenRefreshInterval) {
+        iota_gfx_task_user();
+        last_render = timer_read();
+    }
 
     if (force_dirty) {
         iota_gfx_flush();
