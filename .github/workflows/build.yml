@@ -42,6 +42,10 @@ jobs:
             --exclude='/serial.c' --exclude='/serial.h' \
             crkbd-digimon-oled/ qmk_firmware/keyboards/crkbd/
 
+      - name: Validate upstream keyboard.json metadata
+        working-directory: qmk_firmware
+        run: qmk info -kb crkbd/rev1
+
       - name: Build firmware
         working-directory: qmk_firmware
         run: make crkbd/rev1:default
