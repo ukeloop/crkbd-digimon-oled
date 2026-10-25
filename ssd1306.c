@@ -142,31 +142,43 @@ uint8_t revbits8(uint8_t v) {
 }
 
 void screen_render(ScreenMatrix* screen) {
-    // last_flush = timer_read();
-    iota_gfx_on();
+    bool success = false;
+
 #    if DEBUG_TO_SCREEN
     ++displaying;
 #    endif
 
-    // Move to the home position
+    // Do not continue sending a frame if the display did not acknowledge.
+    if (!iota_gfx_on()) {
+        goto done;
+    }
+
+    // Move to the home position.
     SEND_CMDS(cmd3(PageAddr, 0, (DisplayHeight >> 3) - 1), cmd3(ColumnAddr, 0, DisplayWidth - 1));
 
-    if (i2c_start_write(SSD1306_ADDRESS) || i2c_master_write(0x40)) {
-        // Data mode
+    if (i2c_start_write(SSD1306_ADDRESS)) {
+        goto done;
+    }
+
+    if (i2c_master_write(0x40)) {
         goto done;
     }
 
     for (uint8_t row = 0; row < MatrixRows; ++row) {
         for (uint8_t col = 0; col < DisplayWidth; ++col) {
             uint8_t bits = screen->screen[DisplayWidth - col - 1][row];
-            i2c_master_write(revbits8(bits));
+            if (i2c_master_write(revbits8(bits))) {
+                goto done;
+            }
         }
     }
 
-    screen->dirty = false;
+    success = true;
 
 done:
     i2c_master_stop();
+    // Keep the frame dirty after any I2C error so the next scheduled task can retry.
+    screen->dirty = !success;
 #    if DEBUG_TO_SCREEN
     --displaying;
 #    endif
